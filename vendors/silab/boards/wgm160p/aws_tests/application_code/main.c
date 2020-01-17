@@ -143,10 +143,10 @@ int main( void )
     prvMiscInitialization();
 
     /* Create tasks that are not dependent on the Wi-Fi being initialized. */
-    xLoggingTaskInitialize( mainLOGGING_TASK_STACK_SIZE,
+    /*xLoggingTaskInitialize( mainLOGGING_TASK_STACK_SIZE,
                             tskIDLE_PRIORITY,
                             mainLOGGING_MESSAGE_QUEUE_LENGTH );
-
+*/
     /* FIX ME: If you are using Ethernet network connections and the FreeRTOS+TCP stack,
      * uncomment the initialization function, FreeRTOS_IPInit(), below. */
     /*FreeRTOS_IPInit( ucIPAddress,
@@ -170,6 +170,9 @@ static void prvMiscInitialization( void )
     /* FIX ME: Perform any hardware initializations, that don't require the RTOS to be 
      * running, here.
      */
+		RETARGET_SerialInit();
+		RETARGET_SerialCrLf(1);
+		configPRINT_STRING("Hello\n");
 }
 /*-----------------------------------------------------------*/
 
@@ -415,7 +418,7 @@ void vApplicationIdleHook( void )
 
     if( ( xTimeNow - xLastPrint ) > xPrintFrequency )
     {
-        configPRINT( "." );
+    	configPRINT_STRING( "." );
         xLastPrint = xTimeNow;
     }
 }
